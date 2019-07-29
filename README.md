@@ -22,6 +22,11 @@ a csv file can be imported for visualization.
 --Alternatively, Genes can be identified by the selecting the listed contrasts.
 --Heatmap can be customized and exported to PDF.
 
+# Install Hotgenes
+        install.packages("devtools")
+        library(devtools)
+        install_github("Rvirgenslane/Hotgenes")
+
 # Download and try with example data!
     library(Hotgenes)
 
