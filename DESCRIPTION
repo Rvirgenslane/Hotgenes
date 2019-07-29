@@ -1,7 +1,7 @@
 Package: Hotgenes
 Type: Package
 Title: For Visualizing Differential Expression Analysis
-Version: 0.99.0
+Version: 0.99.1
 Author: Richard Virgen-Slane
 Maintainer: The package maintainer <RVS.BioTools@gmail.com>
 Description: This package reads the DESeq2 output file to provide users
@@ -25,6 +25,14 @@ Imports:
     data.table,
     grDevices,
     plyr,
-    rlang
+    rlang,
+    graphics,
+    stats,
+    utils
 StagedInstall: yes
-
+biocViews: Software, GUI, GeneExpression, QualityControl, Clustering,
+    DifferentialExpression
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

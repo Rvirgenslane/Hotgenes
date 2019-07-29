@@ -12,6 +12,18 @@ DEseq2_export(DEseq2_object = NULL, padj_cut = 0.1)
 \item{padj_cut}{the adjusted pvalue cut off for differential
 expression.  Default = 0.1}
 }
+\value{
+list of R objects needed for Shiny_DE_viz function
+}
 \description{
 Prepares DESeq2 object for visualization
+}
+\examples{
+dds_con_dir<-system.file("extdata",
+"dds_con.Rdata", package = "Hotgenes", mustWork = TRUE)
+load(dds_con_dir)
+Example_Hotgenes<-DEseq2_export(DEseq2_object = dds_con, padj_cut = 0.1)
+Example_Hotgenes$Exported_plots$transformation_plots
+Example_Hotgenes$Exported_plots$boxplot_rlog
+Example_Hotgenes$Exported_plots$boxplot_vsd
 }
