@@ -5,6 +5,7 @@ browser. Currently only supports DE with "Wald" testing.
 "LRT" will still work, but contrast selection has not been optimized. 
 
 In the Shiny_DE_viz app:
+
 -Tab 1 Normalization QC
 Visualize your data as normalized using different methods
 
@@ -38,7 +39,7 @@ a csv file can be imported for visualization.
     if(interactive()){
       Shiny_DE_viz(Example_Hotgenes)}
 
-# have your own DESeq2 file to explore:
+# Explore your own DESeq2 analysis:
     Input_Hotgenes<-DEseq2_export(DEseq2_object = dds_con,
       padj_cut = 0.1)
 
