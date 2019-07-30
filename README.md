@@ -12,7 +12,8 @@ Tab 1 Normalization QC:
 
 Tab 2 Find Hotgenes:
 
--FactoMineR's HCPC function can find relationships between conditions and differentially expressed genes
+-FactoMineR's HCPC function can find relationships between conditions 
+and differentially expressed genes
 -Export genes to csv file
 
 Tab 3 DE coefficients:
