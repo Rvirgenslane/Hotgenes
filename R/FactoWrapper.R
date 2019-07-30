@@ -11,6 +11,8 @@
 #' Default is "clust", which represents the HCPC ward clusters.
 #' @param label_sel String indicating if individuals "ind" and variables
 #' "var" should be labeled on the biplot.
+#' @param readouts either "rlog" (default) or "vsd" indicating the variance
+#' stabilization method preferred for visualization.
 #' @param pointsize numeric value for point size.
 #' @param labelsize numeric value for label size.
 #' @param selected_contrast string indicating the DE contrast to be explored.

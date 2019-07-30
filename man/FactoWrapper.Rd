@@ -15,6 +15,9 @@ FactoWrapper(Output_DEseq2 = NULL, biplot = TRUE, readouts = "rlog",
 \item{biplot}{Boolean value. If TRUE (Default), both individuals and variables
 will be shown on the plot. If FALSE, only individuals will be plotted.}
 
+\item{readouts}{either "rlog" (default) or "vsd" indicating the variance
+stabilization method preferred for visualization.}
+
 \item{Top_var}{a numeric value indicating the number of top contributing
 genes to show on the biplot.}
 
