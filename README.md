@@ -11,16 +11,21 @@ Visualize your data as normalized using different methods
 
 -Tab 2 integrates FactoMineR's HCPC function to 
 detect relationships between conditions and differentially expressed genes
+
 --HCPC can help find the most representation DE genes for validation 
 and export them to csv file.
 
 -Tab 3 Reports the DE coefficients calculated by DESeq2
+
 --DE coefficients can also be exported to csv file.
 
 -Tab 4 integrates Pheatmap
+
 --Representative Genes identified in tab 1 and saved to 
 a csv file can be imported for visualization.
+
 --Alternatively, Genes can be identified by the selecting the listed contrasts.
+
 --Heatmap can be customized and exported to PDF.
 
 # Install Hotgenes
