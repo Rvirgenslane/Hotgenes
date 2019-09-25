@@ -107,13 +107,27 @@ Exported_plots<-list(transformation_plots=transformation_plots,
 boxplot_rlog=boxplot_rlog,
 boxplot_vsd=boxplot_vsd)
 
+
+# making query_dataset ----------------------------------------------------
+
+# Getting expression data
+Temp_data<-data.frame(t(df_rld))
+
+# Merging
+Final_DF<-merge(design_data,
+                Temp_data,
+                by = "row.names")
+rownames(Final_DF)<-Final_DF$Row.names
+Final_DF$Row.names<-NULL
+
 #
 Export<-list(Output_DE=Output_DE,
 Output_lists=Output_lists,
 betas_con=betas_con,
 Exported_plots=Exported_plots,
 Normalized_Expression=Normalized_Expression,
-design_data=design_data)
+design_data=design_data,
+Query_set=Final_DF)
 return(Export)
 
 
