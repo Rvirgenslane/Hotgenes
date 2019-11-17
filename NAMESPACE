@@ -2,6 +2,7 @@
 
 export(DEseq2_export)
 export(FactoWrapper)
+export(Hotgenes2GeneSet)
 export(Shiny_DE_viz)
 import(DESeq2)
 import(FactoMineR)

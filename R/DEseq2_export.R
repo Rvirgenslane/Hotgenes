@@ -57,14 +57,10 @@ res_con<-data.frame(res)
 # head(res_con)
 Sig_DE<-res_con[order(res_con$padj),]
 Sig_DE<-Sig_DE[c(0:cut),]
+
 if(cut!=0){
 Output_DE[[i]]<-Sig_DE
 Output_lists[[i]]<-rownames(Sig_DE)
-Sig_DE$Condtion<-rownames(Sig_DE)
-rownames(Sig_DE)<-NULL
-Final_DE<-Sig_DE[c("Condtion","baseMean", "log2FoldChange","lfcSE", "padj")]
-colnames(Final_DE)<-c(i,"baseMean", "log2FoldChange","lfcSE", "padj")
-
 }
 }
 
