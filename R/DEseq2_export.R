@@ -46,6 +46,14 @@ mode="list"), all_contrasts)
 Output_DE <- setNames(vector(length(all_contrasts),
 mode="list"), all_contrasts)
 
+# Enrichment/Depletion lists
+Enriched_by <- setNames(vector(length(all_contrasts), mode = "list"), 
+                        all_contrasts)
+
+Depleted_by <- setNames(vector(length(all_contrasts), mode = "list"), 
+                        all_contrasts)
+
+
 for (i in all_contrasts) {
 res <- lfcShrink(DEseq2_object, coef = i, type = lfcShrink_type, quiet = FALSE)
 
@@ -60,6 +68,9 @@ Sig_DE<-Sig_DE[c(0:cut),]
 
 if(cut!=0){
 Output_DE[[i]]<-Sig_DE
+
+Enriched_by[[i]]<-rownames(Sig_DE[Sig_DE$log2FoldChange > 0,])
+Depleted_by[[i]]<-rownames(Sig_DE[Sig_DE$log2FoldChange < 0,])
 Output_lists[[i]]<-rownames(Sig_DE)
 }
 }
@@ -119,6 +130,8 @@ Final_DF$Row.names<-NULL
 #
 Export<-list(Output_DE=Output_DE,
 Output_lists=Output_lists,
+Enriched_by=Enriched_by,
+Depleted_by=Depleted_by,
 betas_con=betas_con,
 Exported_plots=Exported_plots,
 Normalized_Expression=Normalized_Expression,
