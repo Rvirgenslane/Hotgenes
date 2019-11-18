@@ -99,20 +99,21 @@ return(EqDatedf_cat)
 
 Pheatmap_Viz<-function(DE_Input=NULL,
 hotList=NULL,samples_ids=1,readouts=1,ncut=NULL,
-selected_contrast=2,padj_cut=0.1,lfc_cut=0){
+selected_contrast=2,lfc_cut=0){
 
 # selecting normalized data -----------------------------------------------
 
 gene_levels<-DE_Input$Normalized_Expression[[readouts]]
 
-
+# hotlist input
 if(is.null(hotList)){
 contrast_name<-names(DE_Input$Output_DE[selected_contrast])
 contrast_name_lists <- setNames(vector(length(contrast_name),
 mode="list"), contrast_name)
 
 for (i in contrast_name) {
-sig_ids<-rownames(DE_Input$Output_DE[[i]][abs(DE_Input$Output_DE[[i]]$log2FoldChange)>=lfc_cut,])
+sig_ids<-rownames(DE_Input$Output_DE[[i]]
+[abs(DE_Input$Output_DE[[i]]$log2FoldChange)>=lfc_cut,])
 contrast_name_lists[[i]]<-sig_ids
 }
 
@@ -133,7 +134,6 @@ gene_id_cut<-gene_ids[seq(1,ncut)]
 gene_id_cut<-gene_ids[seq(1,ncut)]
 }
 dm <- gene_levels[gene_id_cut,samples_ids]
-
 return(dm)
 }
 
@@ -153,8 +153,6 @@ FactoMiner_PCA[i,"Total genes"]<-length(DEseq2_export$Output_lists[[i]])
 FactoMiner_PCA$name<-paste(FactoMiner_PCA$name,
 FactoMiner_PCA$`Total genes`,
 sep = " genes: ")
-
-
 
 
 # tab2 DE tables ----------------------------------------------------------
