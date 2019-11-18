@@ -121,7 +121,6 @@ gene_ids<-unique(unlist(contrast_name_lists, use.names = FALSE))
 
 } else if(!is.null(hotList)){
 contrast_name<-NULL
-padj_cut<-NULL
 lfc_cut<-NULL
 ncut<-NULL
 gene_ids<-hotList
@@ -489,7 +488,7 @@ samples_ids = input$Samples,
 ncut=input$Var2,
 readouts=input$Norm_selection,
 selected_contrast=input$DE_Contrasts2,
-padj_cut=0.1,lfc_cut=input$lfc)
+lfc_cut=input$lfc)
 
 
 
