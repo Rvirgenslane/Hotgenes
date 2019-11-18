@@ -51,12 +51,12 @@ Output_lists[[i]]<-sig_genes
 Output_DE[[i]]<-data.frame(Genes=sig_genes,
 log2FoldChange=limmafit[["coefficients"]][sig_genes,i],  
 stat=limmafit[["t"]][sig_genes,i],   
-padj=limmafit[["p.value"]][sig_genes,i], 
+pvalue=limmafit[["p.value"]][sig_genes,i], 
 stringsAsFactors = FALSE)
 
 
 
-Output_DE[[i]]<-Output_DE[[i]][order(Output_DE[[i]]$padj, decreasing = FALSE),]
+Output_DE[[i]]<-Output_DE[[i]][order(Output_DE[[i]]$pvalue, decreasing = FALSE),]
 rownames(Output_DE[[i]])<-Output_DE[[i]]$Genes
 Enriched_by[[i]]<-Output_DE[[i]][Output_DE[[i]]$log2FoldChange > 0,]$Genes
 Depleted_by[[i]]<-Output_DE[[i]][Output_DE[[i]]$log2FoldChange < 0,]$Genes

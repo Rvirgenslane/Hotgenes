@@ -116,8 +116,7 @@ contrast_name_lists <- setNames(vector(length(contrast_name),
 mode="list"), contrast_name)
 
 for (i in contrast_name) {
-sig_ids<-rownames(DE_Input$Output_DE[[i]][DE_Input$Output_DE[[i]]$padj<padj_cut&
-abs(DE_Input$Output_DE[[i]]$log2FoldChange)>=lfc_cut,])
+sig_ids<-rownames(DE_Input$Output_DE[[i]][abs(DE_Input$Output_DE[[i]]$log2FoldChange)>=lfc_cut,])
 contrast_name_lists[[i]]<-sig_ids
 }
 
