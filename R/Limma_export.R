@@ -114,7 +114,7 @@ boxplot_Normalized_data=boxplot_Normalized_data)
 
 # Getting expression data
 
-Temp_data<-data.frame(t(Normalized_Expression))
+Temp_data<-data.frame(t(Normalized_data))
 
 
 # Merging
