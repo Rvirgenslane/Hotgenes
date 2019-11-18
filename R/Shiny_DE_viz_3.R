@@ -18,8 +18,8 @@
 
 Shiny_DE_viz<-function(DEseq2_export=NULL){
 
-# Important functions
-# Quanti table ------------------------------------------------------------
+
+# FactoMiner Functions ----------------------------------------------------
 Quanti_Table<-function(res.hcpc, Round_To){
 
 # Variable
@@ -95,20 +95,16 @@ EqDatedf_cat <- rbind(EqDatedf_cat, df_cat[i,])
 return(EqDatedf_cat)
 }
 
-# Dev start ---------------------------------------------------------------
 # pheatmap function -------------------------------------------------------
 
-
 Pheatmap_Viz<-function(DE_Input=NULL,
-hotList=NULL,samples_ids=1,readouts="rlog",ncut=NULL,
+hotList=NULL,samples_ids=1,readouts=1,ncut=NULL,
 selected_contrast=2,padj_cut=0.1,lfc_cut=0){
 
-if(readouts=="rlog"){
-gene_levels<-DE_Input$Normalized_Expression$rld
-}
-if(readouts=="vsd"){
-gene_levels<-DE_Input$Normalized_Expression$vsd
-}
+# selecting normalized data -----------------------------------------------
+
+gene_levels<-DE_Input$Normalized_Expression[[readouts]]
+
 
 if(is.null(hotList)){
 contrast_name<-names(DE_Input$Output_DE[selected_contrast])
@@ -160,16 +156,18 @@ sep = " genes: ")
 
 
 
-# tab2 DE tables
+
+# tab2 DE tables ----------------------------------------------------------
 DEseq2_coefficients<-DEseq2_export$Output_DE
 DE_ids<-names(DEseq2_coefficients)
 
-# Tab3_Pheatmap samples ids
-Phea_ids<-colnames(DEseq2_export$Normalized_Expression$rld)
 
-# tab alpha data
+# Tab3_Pheatmap samples ids -----------------------------------------------
+Phea_ids<-colnames(DEseq2_export$Normalized_Expression[[1]])
 
-Exported_plots_ids<-names(DEseq2_export$Exported_plots)[2:3]
+bxplotIDS<-names(DEseq2_export$Exported_plots)
+bxplotIDS<-bxplotIDS[bxplotIDS != "transformation_plots"]
+
 
 # UI ------------------------------------------------------------------
 
@@ -179,15 +177,15 @@ sidebarLayout(sidebarPanel(width = 3,
 
 # tab alpha ---------------------------------------------------------------
 
-conditionalPanel('input.dataset === "Exported_plots_ids"',
+conditionalPanel('input.dataset === "bxplotIDS"',
 downloadButton(outputId = "downalpha", label = "Download the plot"),
 
 # Input: Checkbox for query node color  ----
 radioButtons(inputId = "Norm_viz",
 label = "Visualize Normalization methods:",
 inline  = FALSE,
-choices =  Exported_plots_ids,
-selected = Exported_plots_ids[1])),
+choices =  bxplotIDS,
+selected = bxplotIDS[1])),
 
 
 # tab1 DE frames -----------------------------------------------------------
@@ -195,12 +193,15 @@ conditionalPanel('input.dataset === "FactoMiner_PCA"',
 
 downloadButton(outputId = "down1", label = "Download the plot"),
 
-# Input: Normalization method
+
+# Input: Normalization method PCA -----------------------------------------
+
+
 radioButtons(inputId = "PCA_Norm_selection",
 label = "Normalization selection:",
 inline  = TRUE,
-choices =  c("rlog", "vsd"),
-selected = c("rlog", "vsd")[1]),
+choices =  names(DEseq2_export$Normalized_Expression),
+selected = names(DEseq2_export$Normalized_Expression)[1]),
 
 
 # Input: Checkbox for query node color  ----
@@ -310,12 +311,16 @@ choiceNames =  FactoMiner_PCA[,1],
 choiceValues = FactoMiner_PCA[,2],
 selected = FactoMiner_PCA[1,2]),
 
-# Input: Normalization method
+
+
+# Input: Normalization method Pheatmap ------------------------------------
+
+
 radioButtons(inputId = "Norm_selection",
 label = "Normalization selection:",
 inline  = TRUE,
-choices =  c("rlog", "vsd"),
-selected = c("rlog", "vsd")[1]),
+choices =  names(DEseq2_export$Normalized_Expression),
+selected = names(DEseq2_export$Normalized_Expression)[1]),
 
 radioButtons(inputId = "col_pal",
 label = "Color schemes:",
@@ -405,7 +410,7 @@ selected = Phea_ids)) ),
 
 mainPanel(tabsetPanel(id = 'dataset',
 tabPanel(title = "Normalization QC",
-value="Exported_plots_ids",plotOutput(outputId = "G_plots") ,
+value="bxplotIDS",plotOutput(outputId = "G_plots") ,
 plotOutput(outputId = "Exporto_plots")),
 
 tabPanel(title = "Search for Hotgenes",

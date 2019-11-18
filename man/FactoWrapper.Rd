@@ -4,7 +4,7 @@
 \alias{FactoWrapper}
 \title{FactoMiner wrapper used by Shiny_DE_Viz for PCA/HCPC of samples and genes}
 \usage{
-FactoWrapper(Output_DEseq2 = NULL, biplot = TRUE, readouts = "rlog",
+FactoWrapper(Output_DEseq2 = NULL, biplot = TRUE, readouts = 1,
   Top_var = 10, ellipse.level = 0.5, ellipse.alpha = 0.5,
   habillage_selection = "clust", label_sel = c("ind", "var"),
   pointsize = 1, labelsize = 1, selected_contrast = 1)

@@ -28,7 +28,7 @@
 
 FactoWrapper<-function(Output_DEseq2=NULL,
 biplot=TRUE,
-readouts="rlog",
+readouts=1,
 Top_var=10,
 ellipse.level= 0.5,
 ellipse.alpha=0.5,
@@ -40,12 +40,7 @@ selected_contrast= 1){
 title=""
 # Normalized expression
 
-if(readouts=="rlog"){
-    gene_levels<-Output_DEseq2$Normalized_Expression$rld
-}
-if(readouts=="vsd"){
-    gene_levels<-Output_DEseq2$Normalized_Expression$vsd
-}
+gene_levels<-Output_DEseq2$Normalized_Expression[[readouts]]
 
 
 # getting ids

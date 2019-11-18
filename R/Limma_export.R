@@ -95,37 +95,26 @@ names(betas_con)<-make.names(names(betas_con), unique = FALSE, allow_ = TRUE)
 
 
 # expression matrix -------------------------------------------------------
-
-
-
-df_vsd<-data.frame(Expression_dat, check.names = FALSE)
-df_rld<-data.frame(Expression_dat, check.names = FALSE)
-
-Normalized_Expression<-list(vsd=df_vsd,
-rld=df_rld)
+Normalized_data<-data.frame(Expression_dat, check.names = FALSE)
+Normalized_Expression<-list(Normalized_data=Normalized_data)
 
 # transformation_plots
 
 #dev.off() ## clean up device
 
 # boxplot(df_rld)
-boxplot(df_rld)
-boxplot_rlog <- recordPlot()
+boxplot(Normalized_data)
+boxplot_Normalized_data <- recordPlot()
 dev.off() ## clean up device
 
-# boxplot(df_rld)
-boxplot(df_vsd)
-boxplot_vsd <- recordPlot()
-dev.off() ## clean up device
 
 Exported_plots<-list(transformation_plots=NULL,
-boxplot_rlog=boxplot_rlog,
-boxplot_vsd=boxplot_vsd)
+boxplot_Normalized_data=boxplot_Normalized_data)
 
 
 # Getting expression data
 
-Temp_data<-data.frame(t(df_vsd))
+Temp_data<-data.frame(t(Normalized_Expression))
 
 
 # Merging
