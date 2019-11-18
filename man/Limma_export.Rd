@@ -25,3 +25,27 @@ list of R objects needed for Shiny_DE_viz function
 \description{
 Prepares Limma object for visualization
 }
+\examples{
+Example_Hotgenes_dir<-system.file("extdata",
+"Example_Hotgenes.Rdata",
+package = "Hotgenes", mustWork = TRUE)
+load(Example_Hotgenes_dir)
+
+library(limma)
+
+exp<-Example_Hotgenes$Normalized_Expression$rld
+design_m<-Example_Hotgenes$design_data
+
+design_matrix <- model.matrix(~sh*Hrs+Bio_Rep,   
+data = design_m)
+
+aw <- arrayWeights(exp, design_matrix)
+
+fit <- lmFit(exp, design=design_matrix, weights = aw)
+fit <- eBayes(fit, robust = TRUE) 
+
+L_out<-Limma_export(Expression_dat = exp, 
+design_data = design_m, 
+limmafit = fit)
+summary(L_out$Output_lists)
+}
