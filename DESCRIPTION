@@ -18,6 +18,7 @@ Imports:
     RColorBrewer,
     dplyr,
     factoextra,
+    EnhancedVolcano,
     ggplot2,
     pheatmap,
     shiny,
