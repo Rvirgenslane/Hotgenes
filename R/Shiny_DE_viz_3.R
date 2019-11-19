@@ -225,10 +225,14 @@ choices =  names(DEseq2_coefficients) )),
 
 conditionalPanel('input.dataset === "Volcano_Plots_labels"',
 # number of genes to highlight
-sliderInput(inputId = "Vplot_TopSig",
+numericInput(inputId = "Vplot_TopSig",
 label = "Genes to Highlight:",
-value = 1, min = 1,
-max = 50, step = 1),
+value = 1, 
+min = 1,
+max = 1000, 
+step = 1),
+
+
 
 radioButtons(inputId = "Vplot_contrast",
 label = "Contrasts selection:",
