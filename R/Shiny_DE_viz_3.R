@@ -95,46 +95,6 @@ EqDatedf_cat <- rbind(EqDatedf_cat, df_cat[i,])
 return(EqDatedf_cat)
 }
 
-# pheatmap function -------------------------------------------------------
-
-Pheatmap_Viz<-function(DE_Input=NULL,
-hotList=NULL,samples_ids=1,readouts=1,ncut=NULL,
-selected_contrast=2,lfc_cut=0){
-
-# selecting normalized data -----------------------------------------------
-
-gene_levels<-DE_Input$Normalized_Expression[[readouts]]
-
-# hotlist input
-if(is.null(hotList)){
-contrast_name<-names(DE_Input$Output_DE[selected_contrast])
-contrast_name_lists <- setNames(vector(length(contrast_name),
-mode="list"), contrast_name)
-
-for (i in contrast_name) {
-sig_ids<-rownames(DE_Input$Output_DE[[i]]
-[abs(DE_Input$Output_DE[[i]]$log2FoldChange)>=lfc_cut,])
-contrast_name_lists[[i]]<-sig_ids
-}
-
-gene_ids<-unique(unlist(contrast_name_lists, use.names = FALSE))
-
-} else if(!is.null(hotList)){
-contrast_name<-NULL
-lfc_cut<-NULL
-ncut<-NULL
-gene_ids<-hotList
-}
-
-if(is.null(ncut)){
-ncut<-length(gene_ids)
-gene_id_cut<-gene_ids[seq(1,ncut)]
-}else if(!is.null(ncut)){
-gene_id_cut<-gene_ids[seq(1,ncut)]
-}
-dm <- gene_levels[gene_id_cut,samples_ids]
-return(dm)
-}
 
 
 habillage_choices<-c("clust", names(DEseq2_export$design_data))
@@ -154,16 +114,20 @@ FactoMiner_PCA$`Total genes`,
 sep = " genes: ")
 
 
+
 # tab2 DE tables ----------------------------------------------------------
 DEseq2_coefficients<-DEseq2_export$Output_DE
-DE_ids<-names(DEseq2_coefficients)
-
 
 # Tab3_Pheatmap samples ids -----------------------------------------------
 Phea_ids<-colnames(DEseq2_export$Normalized_Expression[[1]])
-
 bxplotIDS<-names(DEseq2_export$Exported_plots)
 bxplotIDS<-bxplotIDS[bxplotIDS != "transformation_plots"]
+
+Pheatmap_labels<-FactoMiner_PCA
+Volcano_Plots_labels<-FactoMiner_PCA
+
+# tab4 volcano plots
+
 
 
 # UI ------------------------------------------------------------------
@@ -172,12 +136,11 @@ ui <- fluidPage(
 sidebarLayout(sidebarPanel(width = 3,
 
 
-# tab alpha ---------------------------------------------------------------
+# tab 1 boxplots ----------------------------------------------------------
 
 conditionalPanel('input.dataset === "bxplotIDS"',
 downloadButton(outputId = "downalpha", label = "Download the plot"),
 
-# Input: Checkbox for query node color  ----
 radioButtons(inputId = "Norm_viz",
 label = "Visualize Normalization methods:",
 inline  = FALSE,
@@ -185,14 +148,9 @@ choices =  bxplotIDS,
 selected = bxplotIDS[1])),
 
 
-# tab1 DE frames -----------------------------------------------------------
+# tab 2 PCA ---------------------------------------------------------------
 conditionalPanel('input.dataset === "FactoMiner_PCA"',
-
 downloadButton(outputId = "down1", label = "Download the plot"),
-
-
-# Input: Normalization method PCA -----------------------------------------
-
 
 radioButtons(inputId = "PCA_Norm_selection",
 label = "Normalization selection:",
@@ -200,8 +158,6 @@ inline  = TRUE,
 choices =  names(DEseq2_export$Normalized_Expression),
 selected = names(DEseq2_export$Normalized_Expression)[1]),
 
-
-# Input: Checkbox for query node color  ----
 checkboxGroupInput(inputId = "Contrasts",
 label = "Contrasts selection:",
 inline  = FALSE,
@@ -209,9 +165,6 @@ choiceNames =  FactoMiner_PCA[,1],
 choiceValues = FactoMiner_PCA[,2],
 selected = FactoMiner_PCA[1,2]),
 
-
-
-# point size
 sliderInput(inputId = "point_size",
 label = "point size",
 value = 3,
@@ -219,7 +172,6 @@ min = 1,
 max = 10,
 step = 1),
 
-# label_size
 sliderInput(inputId = "label_size",
 label = "label size:",
 value = 3,
@@ -227,7 +179,6 @@ min = 1,
 max = 10,
 step = 1),
 
-# ellipse.level
 sliderInput(inputId = "ellipse.level",
 label = "ellipse level:",
 value = 0.5,
@@ -235,7 +186,6 @@ min = 0,
 max = 1,
 step = 0.05),
 
-# ellipse.level
 sliderInput(inputId = "ellipse.alpha",
 label = "ellipse alpha:",
 value = 0,
@@ -243,14 +193,11 @@ min = 0,
 max = 1,
 step = 0.05),
 
-# Input: Checkbox for query node color  ----
 radioButtons(inputId = "habillage_id",
 label = "Color by:",
 inline  = FALSE,
 choices =  habillage_choices),
 
-
-# Input: Checkbox for Contrast selection  ----
 radioButtons(inputId = "Biplot",
 label = "Show Genes:",
 inline  = FALSE,
@@ -265,18 +212,34 @@ max = 30000,
 step = 1)),
 
 
-# tab2 DE frames -----------------------------------------------------------
-conditionalPanel('input.dataset === "DEseq2_coefficients"', # DEseq2_coefficients
-# Input: Checkbox for query node color  ----
+# tab3 DE frames -----------------------------------------------------------
+conditionalPanel('input.dataset === "DEseq2_coefficients"',
+
 radioButtons(inputId = "DE_Contrasts",
 label = "Contrasts selection:",
 inline  = FALSE,
-choices =  DE_ids )),
+choices =  names(DEseq2_coefficients) )),
 
 
+# tab 4 volcano plots -----------------------------------------------------
 
-# Tab3_Pheatmap -----------------------------------------------------------
-conditionalPanel('input.dataset === "DEseq2_export"', # DEseq2_coefficients
+conditionalPanel('input.dataset === "Volcano_Plots_labels"',
+# number of genes to highlight
+sliderInput(inputId = "Vplot_TopSig",
+label = "Genes to Highlight:",
+value = 1, min = 1,
+max = 50, step = 1),
+
+radioButtons(inputId = "Vplot_contrast",
+label = "Contrasts selection:",
+inline  = FALSE,
+choiceNames =  Volcano_Plots_labels[,1],
+choiceValues = Volcano_Plots_labels[,2],
+selected = Volcano_Plots_labels[1,2])),
+
+
+# Tab 5 Pheatmap -----------------------------------------------------------
+conditionalPanel('input.dataset === "Pheatmap_labels"', 
 downloadButton(outputId = "down2", label = "Download the plot"),
 
 #input hotlist #annotations1
@@ -304,14 +267,9 @@ choices =  c(TRUE, FALSE)),
 radioButtons(inputId = "DE_Contrasts2",
 label = "Contrasts selection:",
 inline  = FALSE,
-choiceNames =  FactoMiner_PCA[,1],
-choiceValues = FactoMiner_PCA[,2],
-selected = FactoMiner_PCA[1,2]),
-
-
-
-# Input: Normalization method Pheatmap ------------------------------------
-
+choiceNames =  Pheatmap_labels[,1],
+choiceValues = Pheatmap_labels[,2],
+selected = Pheatmap_labels[1,2]),
 
 radioButtons(inputId = "Norm_selection",
 label = "Normalization selection:",
@@ -338,9 +296,6 @@ radioButtons(inputId = "CC",
 label = "Cluster:",
 inline  = TRUE,
 choices =  c(TRUE, FALSE)),
-
-
-
 
 # Cut rows
 sliderInput(inputId = "col_cut",
@@ -404,18 +359,31 @@ selected = Phea_ids)) ),
 
 # tabs and mainpanels -----------------------------------------------------
 
-
+# tab1
 mainPanel(tabsetPanel(id = 'dataset',
+
 tabPanel(title = "Normalization QC",
-value="bxplotIDS",plotOutput(outputId = "G_plots") ,
+value="bxplotIDS",plotOutput(outputId = "G_plots"),
 plotOutput(outputId = "Exporto_plots")),
 
+# tab2
 tabPanel(title = "Search for Hotgenes",
 value = "FactoMiner_PCA", plotOutput(outputId = "PCA_plot"),
 DT::dataTableOutput("tab1.1_Query"),DT::dataTableOutput("tab1.2_Query")),
 
-tabPanel("DEseq2_coefficients", DT::dataTableOutput("tab2_Query")),
-tabPanel(title = "Heatmap", value = "DEseq2_export",
+# tab3
+tabPanel("DEseq2_coefficients", 
+DT::dataTableOutput("tab2_Query")),
+
+# tab4
+tabPanel(title = "Volcano_Plots", 
+value = "Volcano_Plots_labels",
+plotOutput(outputId = "v_plot",
+width = "100%", height = "700px")),
+
+# tab5
+tabPanel(title = "Heatmap", 
+value = "Pheatmap_labels",
 plotOutput(outputId = "pheat_plot",
 width = "100%", height = "700px")) ))))
 
@@ -451,6 +419,18 @@ extensions = 'Buttons',
 options = list(dom = 'Bfrtip', pageLength = -1,
 buttons = c('copy', 'csv', 'excel', 'pdf', 'print'))) })
 
+# tab4 volcano plots
+
+# volcano plot ------------------------------------------------------------
+
+
+Vplot_p <- reactive({
+    Vplot(Hotgenes_input=DEseq2_export, 
+          TopSig=input$Vplot_TopSig, 
+          contrast=input$Vplot_contrast) 
+})
+
+output$v_plot <- renderPlot({Vplot_p()})
 
 
 # Tab3_Pheatmap pheatmap
@@ -479,6 +459,12 @@ print(annotations)
 })
 
 
+
+
+
+# pheatmap ----------------------------------------------------------------
+
+
 pheat_p <- reactive({
 
 dm<-Pheatmap_Viz(DE_Input = DEseq2_export,
@@ -489,7 +475,6 @@ ncut=input$Var2,
 readouts=input$Norm_selection,
 selected_contrast=input$DE_Contrasts2,
 lfc_cut=input$lfc)
-
 
 
 pheatmap(dm,
@@ -514,6 +499,9 @@ color = colorRampPalette(rev(brewer.pal(n = 9, name =input$col_pal)))(input$CR))
 
 output$pheat_plot <- renderPlot({pheat_p()})
 
+
+
+# FactoMiner --------------------------------------------------------------
 
 
 output_temp<-reactive({

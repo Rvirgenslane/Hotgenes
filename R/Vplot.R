@@ -20,9 +20,8 @@
 Vplot<-function(Hotgenes_input=NULL, 
                 TopSig=1, stuffer=0.5,
                 contrast=1){
-    require(EnhancedVolcano)   
-    id_sel<-names(Hotgenes_input$Output_DE)[[contrast]]
-    
+    id_sel<-names(Hotgenes_input$Output_DE[contrast])
+
     plot_inputff<-Hotgenes_input$Output_DE[[id_sel]]
     pcut<-plot_inputff[(TopSig+1),"pvalue"]
     
