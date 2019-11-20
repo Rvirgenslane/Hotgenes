@@ -14,7 +14,7 @@
 #' "Example_Hotgenes.Rdata",
 #' package = "Hotgenes", mustWork = TRUE)
 #' load(Example_Hotgenes_dir)
-#' names(Example_Hotgenes_dir$Output_DE)
+#' names(Example_Hotgenes$Output_DE)
 #' Vplot(Example_Hotgenes, TopSig=10, contrast = 1)
 
 Vplot<-function(Hotgenes_input=NULL, 
