@@ -13,6 +13,9 @@ Limma_export(limmafit = NULL, design_data = NULL,
 
 \item{design_data}{data.frame containing Experimental design}
 
+\item{Expression_dat}{R object containing the expression data
+used for limma differential expression analysis.}
+
 \item{method}{character string specifying how genes and contrasts are to be combined in the multiple testing scheme.  Choices are \code{"separate"}, \code{"global"}, \code{"hierarchical"} or \code{"nestedF"}.}
 
 \item{adjust.method}{character string specifying p-value adjustment method.  Possible values are \code{"none"}, \code{"BH"}, \code{"fdr"} (equivalent to \code{"BH"}), \code{"BY"} and \code{"holm"}. See \code{\link[stats]{p.adjust}} for details.}

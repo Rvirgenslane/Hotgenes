@@ -1,5 +1,6 @@
 #' Exports hotgenes object to csv files
 #' @export
+#' @importFrom utils write.csv
 #' @param hotgenes object created by DEseq2_export or Limma_export
 #' functions.
 #' @param Exps_Out logical, if TRUE (default), available expression data
@@ -24,7 +25,8 @@ readouts=1,
 dir_out=NULL)  {
 
 if(is.null(dir_out)){
-dir_out<-getwd()
+    dir_out<-file.path(getwd(),"hotgenes_csv")
+    dir.create(dir_out)
 }
 # output path
 dir.create(file.path(dir_out, "DE_tables"))
