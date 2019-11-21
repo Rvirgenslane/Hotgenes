@@ -18,7 +18,7 @@
 #' Vplot(Example_Hotgenes, TopSig=10, contrast = 1)
 
 Vplot<-function(Hotgenes_input=NULL, 
-                pval_cut=0.1, 
+                pval_cut=0, 
                 FCcutoff=0, 
                 stuffer=0.5,
                 contrast=1){

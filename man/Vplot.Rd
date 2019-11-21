@@ -4,7 +4,7 @@
 \alias{Vplot}
 \title{Wrapper for EnhancedVolcano}
 \usage{
-Vplot(Hotgenes_input = NULL, pval_cut = 0.1, FCcutoff = 0,
+Vplot(Hotgenes_input = NULL, pval_cut = 0, FCcutoff = 0,
   stuffer = 0.5, contrast = 1)
 }
 \arguments{

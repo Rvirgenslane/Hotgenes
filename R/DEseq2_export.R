@@ -15,6 +15,9 @@
 #' estimator. Other options is "apeglm".
 #' @param padj_cut the adjusted pvalue cut off for differential
 #' expression.  Default = 0.1
+#' @param rlog_export Logical value, if TRUE (default), data
+#' normalized by rlog will be exported. If FALSE, only 
+#' varianceStabilizingTransformation normalization will be used.
 #' @seealso \code{\link[DESeq2]{lfcShrink}}
 #' @return list of R objects needed for Shiny_DE_viz function
 #' @examples
@@ -28,6 +31,7 @@
 
 DEseq2_export<-function(DEseq2_object = NULL,
 lfcShrink_type ="normal",
+rlog_export=TRUE,
 padj_cut=0.1){
 
 # setting up global variables
@@ -48,10 +52,10 @@ mode="list"), all_contrasts)
 
 # Enrichment/Depletion lists
 Enriched_by <- setNames(vector(length(all_contrasts), mode = "list"), 
-                        all_contrasts)
+all_contrasts)
 
 Depleted_by <- setNames(vector(length(all_contrasts), mode = "list"), 
-                        all_contrasts)
+all_contrasts)
 
 
 for (i in all_contrasts) {
@@ -77,53 +81,82 @@ Output_lists[[i]]<-rownames(Sig_DE)
 
 # stabilizing variance for plots and expression matrix --------------------
 
-rld <- rlog(DEseq2_object, blind = FALSE)
 vsd <- varianceStabilizingTransformation(DEseq2_object, blind = FALSE)
-
 df_vsd<-data.frame(assay(vsd), check.names = FALSE)
-df_rld<-data.frame(assay(rld), check.names = FALSE)
 
-Normalized_Expression<-list(vsd=df_vsd,
-rld=df_rld)
 # plot selection ----------------------------------------------------------
 log2_plus_1_norm<-log2(counts(DEseq2_object, normalized=TRUE)[, seq(1,2)]+1)
-
-df <- bind_rows(
-as_tibble(log2_plus_1_norm) %>% mutate(transformation = "log2(x + 1)"),
-as_tibble(df_rld[, seq(1,2)]) %>% mutate(transformation = "rlog"),
-as_tibble(df_vsd[, seq(1,2)]) %>% mutate(transformation = "vst"))
-colnames(df)[seq(1,2)] <- c("x", "y")
-
-# transformation_plots
-transformation_plots <- ggplot(df, aes(x = .data$x, y = .data$y)) +
-geom_hex(bins = 80) +
-coord_fixed() + facet_grid( . ~ transformation)
-#dev.off() ## clean up device
-
-# boxplot(df_rld)
-boxplot(df_rld)
-boxplot_rlog <- recordPlot()
-dev.off() ## clean up device
 
 # boxplot(df_rld)
 boxplot(df_vsd)
 boxplot_vsd <- recordPlot()
 dev.off() ## clean up device
 
+
+# rlog_export
+if(rlog_export==TRUE){
+rld <- rlog(DEseq2_object, blind = FALSE)
+df_rld<-data.frame(assay(rld), check.names = FALSE)
+
+Normalized_Expression<-list(vsd=df_vsd,
+rld=df_rld)
+
+# boxplot(df_rld)
+boxplot(df_rld)
+boxplot_rlog <- recordPlot()
+dev.off() ## clean up device
+
+
+
+
+df <- bind_rows(
+    as_tibble(log2_plus_1_norm) %>% mutate(transformation = "log2(x + 1)"),
+    as_tibble(df_rld[, seq(1,2)]) %>% mutate(transformation = "rlog"),
+    as_tibble(df_vsd[, seq(1,2)]) %>% mutate(transformation = "vst"))
+colnames(df)[seq(1,2)] <- c("x", "y")
+
+# transformation_plots
+transformation_plots <- ggplot(df, aes(x = .data$x, y = .data$y)) +
+    geom_hex(bins = 80) +
+    coord_fixed() + facet_grid( . ~ transformation)
+
 Exported_plots<-list(transformation_plots=transformation_plots,
-boxplot_rlog=boxplot_rlog,
-boxplot_vsd=boxplot_vsd)
+                     boxplot_rlog=boxplot_rlog,
+                     boxplot_vsd=boxplot_vsd)
+
+}else if(rlog_export!=TRUE){
+    Normalized_Expression<-list(vsd=df_vsd)
+    
+    df <- bind_rows(
+        as_tibble(log2_plus_1_norm) %>% mutate(transformation = "log2(x + 1)"),
+        as_tibble(df_vsd[, seq(1,2)]) %>% mutate(transformation = "vst"))
+    colnames(df)[seq(1,2)] <- c("x", "y")
+    
+    # transformation_plots
+    transformation_plots <- ggplot(df, aes(x = .data$x, y = .data$y)) +
+        geom_hex(bins = 80) +
+        coord_fixed() + facet_grid( . ~ transformation)
+    
+    
+    Exported_plots<-list(transformation_plots=transformation_plots,
+                         boxplot_vsd=boxplot_vsd)
+}
+
 
 
 # making query_dataset ----------------------------------------------------
-
-# Getting expression data
+# rlog_export
+if(rlog_export==TRUE){
 Temp_data<-data.frame(t(df_rld))
+
+}else if(rlog_export!= TRUE){
+Temp_data<-data.frame(t(df_vsd))
+}
 
 # Merging
 Final_DF<-merge(design_data,
-                Temp_data,
-                by = "row.names")
+Temp_data,
+by = "row.names")
 rownames(Final_DF)<-Final_DF$Row.names
 Final_DF$Row.names<-NULL
 

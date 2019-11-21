@@ -147,9 +147,17 @@ choices =  names(DEseq2_coefficients) )),
 
 conditionalPanel('input.dataset === "Volcano_Plots_labels"',
 
+                 
+numericInput(inputId = "stuffer",
+label = "x/y limit adj:",
+value = 0.5, 
+min = 0,
+max = 10, 
+step = 0.5),                 
+                 
 numericInput(inputId = "pval_cut",
 label = "p value cut off:",
-value = 0.1, 
+value = 0, 
 min = 0,
 max = 1, 
 step = 0.01),
@@ -359,6 +367,7 @@ Vplot_p <- reactive({
 Vplot(Hotgenes_input=DEseq2_export, 
 pval_cut=input$pval_cut, 
 FCcutoff=input$FCcutoff,
+stuffer=input$stuffer,
 contrast=input$Vplot_contrast) 
 })
 
