@@ -4,8 +4,7 @@
 \alias{hotgenes_csv}
 \title{Exports hotgenes object to csv files}
 \usage{
-hotgenes_csv(hotgenes = NULL, Exps_Out = TRUE, readouts = 1,
-  dir_out = NULL)
+hotgenes_csv(hotgenes = NULL, Exps_Out = TRUE, readouts = 1, dir_out = NULL)
 }
 \arguments{
 \item{hotgenes}{object created by DEseq2_export or Limma_export
