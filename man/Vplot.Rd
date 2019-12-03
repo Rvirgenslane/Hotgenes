@@ -6,7 +6,7 @@
 \usage{
 Vplot(
   Hotgenes_input = NULL,
-  pval_cut = 0,
+  pval_cut = 0.1,
   FCcutoff = 0,
   stuffer = 0.5,
   contrast = 1
