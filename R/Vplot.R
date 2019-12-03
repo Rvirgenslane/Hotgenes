@@ -28,7 +28,8 @@ Vplot<-function(Hotgenes_input=NULL,
 
     if(length(plot_inputff[plot_inputff$pvalue ==0,]$pvalue)>0){
       message("0 pvalue replaced by min(pvalue)")
-      plot_inputff[plot_inputff$pvalue ==0,]$pvalue<-min(plot_inputff$pvalue)
+      temp<-plot_inputff[plot_inputff$pvalue !=0,]
+      plot_inputff[plot_inputff$pvalue ==0,]$pvalue<-min(temp$pvalue)
       
     }
     
