@@ -18,7 +18,7 @@
 #' Vplot(Example_Hotgenes, TopSig=10, contrast = 1)
 
 Vplot<-function(Hotgenes_input=NULL, 
-                pval_cut=0, 
+                pval_cut=0.1, 
                 FCcutoff=0, 
                 stuffer=0.5,
                 contrast=1){
@@ -26,7 +26,14 @@ Vplot<-function(Hotgenes_input=NULL,
 
     plot_inputff<-Hotgenes_input$Output_DE[[id_sel]]
 
-  
+    if(length(plot_inputff[plot_inputff$pvalue ==0,]$pvalue)>0){
+      message("0 pvalue replaced by min(pvalue)")
+      plot_inputff[plot_inputff$pvalue ==0,]$pvalue<-min(plot_inputff$pvalue)
+      
+    }
+    
+    
+    
     
     xlim_min<-c(min(plot_inputff$log2FoldChange)-stuffer)
     xlim_max<-c(stuffer+max(plot_inputff$log2FoldChange))

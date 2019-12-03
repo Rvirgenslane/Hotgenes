@@ -157,7 +157,7 @@ step = 0.5),
                  
 numericInput(inputId = "pval_cut",
 label = "p value cut off:",
-value = 0, 
+value = 0.1, 
 min = 0,
 max = 1, 
 step = 0.01),
