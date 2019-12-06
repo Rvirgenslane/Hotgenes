@@ -15,12 +15,12 @@
 #' package = "Hotgenes", mustWork = TRUE)
 #' load(Example_Hotgenes_dir)
 #' names(Example_Hotgenes$Output_DE)
-#' Vplot(Example_Hotgenes, TopSig=10, contrast = 1)
+#' Vplot(Example_Hotgenes, contrast = 1)
 
 Vplot<-function(Hotgenes_input=NULL, 
                 pval_cut=0.1, 
                 FCcutoff=0, 
-                stuffer=0.5,
+                stuffer=1,
                 contrast=1){
     id_sel<-names(Hotgenes_input$Output_DE[contrast])
 

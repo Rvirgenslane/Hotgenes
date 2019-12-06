@@ -15,7 +15,7 @@
 #' "Example_Hotgenes.Rdata",
 #' package = "Hotgenes", mustWork = TRUE)
 #' load(Example_Hotgenes_dir)
-#' hotgenes_csv(Example_Hotgenes_dir)
+#' hotgenes_csv(Example_Hotgenes)
 
 
 # export to csv 
