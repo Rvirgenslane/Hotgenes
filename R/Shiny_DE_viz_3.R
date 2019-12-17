@@ -38,7 +38,7 @@ sep = " genes: ")
 
 
 # tab2 DE tables ----------------------------------------------------------
-DEseq2_coefficients<-DEseq2_export$Output_DE
+DE_coefficients<-DEseq2_export$Output_DE
 
 # Tab3_Pheatmap samples ids -----------------------------------------------
 Phea_ids<-colnames(DEseq2_export$Normalized_Expression[[1]])
@@ -135,12 +135,12 @@ step = 1)),
 
 
 # tab3 DE frames -----------------------------------------------------------
-conditionalPanel('input.dataset === "DEseq2_coefficients"',
+conditionalPanel('input.dataset === "DE_coefficients"',
 
 radioButtons(inputId = "DE_Contrasts",
 label = "Contrasts selection:",
 inline  = FALSE,
-choices =  names(DEseq2_coefficients) )),
+choices =  names(DE_coefficients) )),
 
 
 # tab 4 volcano plots -----------------------------------------------------
@@ -311,7 +311,7 @@ value = "FactoMiner_PCA", plotOutput(outputId = "PCA_plot"),
 DT::dataTableOutput("tab1.1_Query"),DT::dataTableOutput("tab1.2_Query")),
 
 # tab3
-tabPanel("DEseq2_coefficients", 
+tabPanel("DE_coefficients", 
 DT::dataTableOutput("tab2_Query")),
 
 # tab4
@@ -334,7 +334,7 @@ server <- function(input, output, session) {
 
 # Tab2
 output$tab2_Query<- DT::renderDataTable({
-DT::datatable(DEseq2_coefficients[[input$DE_Contrasts]],filter = 'top',
+DT::datatable(DE_coefficients[[input$DE_Contrasts]],filter = 'top',
 extensions = 'Buttons',
 options = list(dom = 'Bfrtip',pageLength = -1,
 buttons = c('copy', 'csv', 'excel', 'pdf', 'print'))) })

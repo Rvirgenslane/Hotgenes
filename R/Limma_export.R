@@ -48,6 +48,15 @@ df_results<-data.frame(res,
 stringsAsFactors = FALSE,
 check.names = FALSE)
 
+# Getting adj pvalues
+Adj_res <- Limma_Adj_pval(limmafit, method=method, 
+                    adjust.method=adjust.method,
+                    p.value=p.value)
+
+df_Adj_res<-data.frame(Adj_res, 
+                       stringsAsFactors = FALSE,
+                       check.names = FALSE)
+
 # betas
 betas_con <-data.frame(limmafit[["coefficients"]], check.names = FALSE)
 
@@ -77,11 +86,12 @@ Output_DE[[i]]<-data.frame(Genes=sig_genes,
 log2FoldChange=limmafit[["coefficients"]][sig_genes,i],  
 stat=limmafit[["t"]][sig_genes,i],   
 pvalue=limmafit[["p.value"]][sig_genes,i], 
+padj=df_Adj_res[sig_genes,i],
 stringsAsFactors = FALSE)
 
 
 
-Output_DE[[i]]<-Output_DE[[i]][order(Output_DE[[i]]$pvalue, decreasing = FALSE),]
+Output_DE[[i]]<-Output_DE[[i]][order(Output_DE[[i]]$padj, decreasing = FALSE),]
 rownames(Output_DE[[i]])<-Output_DE[[i]]$Genes
 Enriched_by[[i]]<-Output_DE[[i]][Output_DE[[i]]$log2FoldChange > 0,]$Genes
 Depleted_by[[i]]<-Output_DE[[i]][Output_DE[[i]]$log2FoldChange < 0,]$Genes

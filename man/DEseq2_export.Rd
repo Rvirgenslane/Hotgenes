@@ -7,8 +7,10 @@
 DEseq2_export(
   DEseq2_object = NULL,
   lfcShrink_type = "normal",
+  resultsSel = NULL,
   rlog_export = TRUE,
-  padj_cut = 0.1
+  padj_cut = 0.1,
+  ...
 )
 }
 \arguments{
@@ -17,12 +19,17 @@ DEseq2_export(
 \item{lfcShrink_type}{"normal" (Default) is the original DESeq2 shrinkage
 estimator. Other options is "apeglm".}
 
+\item{resultsSel}{values from DESeq2 resultsNames function. If NULL
+(default) DE for all results will be reported.}
+
 \item{rlog_export}{Logical value, if TRUE (default), data
 normalized by rlog will be exported. If FALSE, only 
 varianceStabilizingTransformation normalization will be used.}
 
 \item{padj_cut}{the adjusted pvalue cut off for differential
 expression.  Default = 0.1}
+
+\item{...}{additional parameters for lfcShrink function}
 }
 \value{
 list of R objects needed for Shiny_DE_viz function
@@ -34,7 +41,11 @@ Prepares DESeq2 object for visualization
 dds_con_dir<-system.file("extdata",
 "dds_con.Rdata", package = "Hotgenes", mustWork = TRUE)
 load(dds_con_dir)
-Example_Hotgenes<-DEseq2_export(DEseq2_object = dds_con, padj_cut = 0.1)
+library(DESeq2)
+resultsNames(dds_con)
+Example_Hotgenes<-DEseq2_export(DEseq2_object = dds_con, 
+resultsSel = contrast_selec<-c("shEWS","Hrs2","Hrs6",
+"shEWS.Hrs2","shEWS.Hrs6"), padj_cut = 0.1)
 Example_Hotgenes$Exported_plots$transformation_plots
 Example_Hotgenes$Exported_plots$boxplot_rlog
 Example_Hotgenes$Exported_plots$boxplot_vsd

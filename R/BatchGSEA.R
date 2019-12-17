@@ -16,7 +16,6 @@
 #' summary(qbat)
 #' qbat$OuputGSEA$Hrs2$g
 
-
 BatchGSEA<-function(m_df=NULL, HotgenesObj=NULL,
 nTop=10,
 minSize=15,
