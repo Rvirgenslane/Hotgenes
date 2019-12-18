@@ -53,7 +53,7 @@ fgRes<-fgseaRes[fgseaRes$padj<0.1,]
 
 # Filtering
 Up <- head(fgRes[order(fgRes$NES, decreasing = TRUE)], n=nTop)
-Down <- head(fgRes[order(fgRes$NES, decreasing = TRUE)], n = nTop)
+Down <- head(fgRes[order(fgRes$NES, decreasing = FALSE)], n = nTop)
 
 top<-rbind(Up,Down)
 
