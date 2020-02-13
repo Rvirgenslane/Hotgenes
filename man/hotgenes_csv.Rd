@@ -4,7 +4,13 @@
 \alias{hotgenes_csv}
 \title{Exports hotgenes object to csv files}
 \usage{
-hotgenes_csv(hotgenes = NULL, Exps_Out = TRUE, readouts = 1, dir_out = NULL)
+hotgenes_csv(
+  hotgenes = NULL,
+  Exps_Out = TRUE,
+  readouts = 1,
+  sep = "\\t",
+  dir_out = NULL
+)
 }
 \arguments{
 \item{hotgenes}{object created by DEseq2_export or Limma_export
@@ -15,6 +21,8 @@ is also exported to csv file.}
 
 \item{readouts}{integer indicated the desired normalized data to be 
 written to csv file. If 1 (default), the first method is exported}
+
+\item{sep}{field separator string}
 
 \item{dir_out}{string providing the desired directory for export. 
 If not provided, the working directory will be used.}
