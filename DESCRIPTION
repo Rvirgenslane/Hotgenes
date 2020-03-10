@@ -1,9 +1,9 @@
 Package: Hotgenes
 Type: Package
 Title: For Visualizing Differential Expression Analysis
-Version: 0.99.11
+Version: 0.99.12
 Author: Richard Virgen-Slane
-Maintainer: The package maintainer <RVS.BioTools@gmail.com>
+Maintainer: Richard Virgen-Slane <RVS.BioTools@gmail.com>
 Description: This package reads the DESeq2 output file to provide users
     with way to visualize the results. PCA plots, DE coefficients, and 
     Heatmaps can be visualized in a web browser using this package.

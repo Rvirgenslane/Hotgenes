@@ -50,8 +50,8 @@ Vplot<-function(Hotgenes_input=NULL,
                            title = id_sel,
                            pCutoff = pval_cut,
                            FCcutoff = FCcutoff,
-                           transcriptPointSize =3.0,
-                           transcriptLabSize = 3.0) 
+                           pointSize =3.0,
+                           labSize = 3.0) 
     
     
     return(sdff)}
