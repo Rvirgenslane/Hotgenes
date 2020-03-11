@@ -44,5 +44,13 @@ library(msigdbr)
 m_df = msigdbr(species = "Homo sapiens", category = "C5", subcategory = "BP")
 qbat<-BatchGSEA(m_df= m_df, HotgenesObj=Example_Hotgenes)
 summary(qbat)
-qbat$OuputGSEA$Hrs2$g
+qbat$OuputGSEA$shEWS$g
+#' # Prep for GSEA plot
+m_list = m_df \%>\% split(x = .$gene_symbol, f = .$gs_name)
+
+pyid<-qbat$OuputGSEA$shEWS$fgRes$pathway[[2]]
+Gene_Ranks <- qbat$OuputGSEA$shEWS$Gene_Ranks
+fgsea::plotEnrichment(m_list[[pyid]], Gene_Ranks,
+gseaParam = 1, ticksSize = 0.2) +
+ggplot2::labs(title=stringr::str_wrap(pyid, 20))
 }

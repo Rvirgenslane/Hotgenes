@@ -14,7 +14,16 @@
 #' m_df = msigdbr(species = "Homo sapiens", category = "C5", subcategory = "BP")
 #' qbat<-BatchGSEA(m_df= m_df, HotgenesObj=Example_Hotgenes)
 #' summary(qbat)
-#' qbat$OuputGSEA$Hrs2$g
+#' qbat$OuputGSEA$shEWS$g
+#' #' # Prep for GSEA plot
+#' m_list = m_df %>% split(x = .$gene_symbol, f = .$gs_name)
+#' 
+#' pyid<-qbat$OuputGSEA$shEWS$fgRes$pathway[[2]]
+#' Gene_Ranks <- qbat$OuputGSEA$shEWS$Gene_Ranks
+#' fgsea::plotEnrichment(m_list[[pyid]], Gene_Ranks,
+#' gseaParam = 1, ticksSize = 0.2) +
+#' ggplot2::labs(title=stringr::str_wrap(pyid, 20))
+
 
 BatchGSEA<-function(m_df=NULL, HotgenesObj=NULL,
 nTop=10,
@@ -25,9 +34,6 @@ nproc=4){
 
 
 m_list = split(x = m_df$gene_symbol, f = m_df$gs_name)
-
-# fixing names
-names(m_list)<-gsub("_", " ", fixed = TRUE, names(m_list))
 
 contrast_name<-names(HotgenesObj$Output_DE)
 contrast_name_lists <- setNames(vector(length(contrast_name),
@@ -57,7 +63,6 @@ Down <- head(fgRes[order(fgRes$NES, decreasing = FALSE)], n = nTop)
 
 top<-rbind(Up,Down)
 
-top$pathway = stringr::str_replace(top$pathway, "GO " , "")
 top$Enrichment = ifelse(top$NES > 0, "Up-regulated", "Down-regulated")
 
 filtRes = top
@@ -79,7 +84,8 @@ theme(axis.text  = element_text(size=8))
 
 GSEA_OUT<-list(fgRes=fgRes,
 top=top,
-g=g)
+g=g,
+Gene_Ranks=Gene_Ranks)
 
 contrast_name_lists[[DE_sel]]<-GSEA_OUT
 
