@@ -5,9 +5,9 @@ browser. Currently only supports DE with "Wald" testing.
 "LRT" will still work, but contrast selection has not been optimized. 
 
 # Install Hotgenes
-        install.packages("devtools")
-        library(devtools)
-        install_github("Rvirgenslane/Hotgenes")
+       install.packages("rlang") 
+       install.packages("devtools")
+       devtools::install_github("Rvirgenslane/Hotgenes")
 
 # Download and try with example data!
     library(Hotgenes)
