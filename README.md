@@ -5,9 +5,11 @@ browser. Currently only supports DE with "Wald" testing.
 "LRT" will still work, but contrast selection has not been optimized. 
 
 # Install Hotgenes
-       install.packages("rlang") 
-       install.packages("devtools")
-       devtools::install_github("Rvirgenslane/Hotgenes")
+    # For R 3.6.1, install XML accordingly:
+    install.packages("XML", type = "binary")
+    
+    install.packages("devtools")
+    devtools::install_github("Rvirgenslane/Hotgenes")
 
 # Download and try with example data!
     library(Hotgenes)
@@ -19,6 +21,43 @@ browser. Currently only supports DE with "Wald" testing.
     load(Example_Hotgenes_dir)
     if(interactive()){
       Shiny_DE_viz(Example_Hotgenes)}
+
+# GSEA support
+    Example_Hotgenes_dir<-system.file("extdata",
+    "Example_Hotgenes.Rdata",
+    package = "Hotgenes", mustWork = TRUE)
+    load(Example_Hotgenes_dir)
+    library(msigdbr)
+    
+    # GO annotations
+    m_df = msigdbr(species = "Homo sapiens", category = "C5", subcategory = "BP")
+    
+    # Reactome annotations
+    # m_df = msigdbr(species = "Homo sapiens", category = "C2", 
+    # subcategory = "CP:REACTOME")  
+    
+    qbat<-BatchGSEA(HotgenesObj=Example_Hotgenes,
+    m_df= m_df)
+    
+    # View enriched pathways
+    lapply(qbat$OuputGSEA, function(x) head(x$fgRes$pathway))
+    
+    # plot of enriched pathways
+    qbat$OuputGSEA$shEWS$g
+    
+    # Prep for GSEA plot
+    m_list = qbat$m_list
+    
+    # top pathways
+    qbat$OuputGSEA$shEWS$top$pathway
+    pyid<-qbat$OuputGSEA$shEWS$top$pathway[[2]]
+    pyid
+    
+    Gene_Ranks <- qbat$OuputGSEA$shEWS$Gene_Ranks
+    fgsea::plotEnrichment(m_list[[pyid]], Gene_Ranks,
+    gseaParam = 1, ticksSize = 0.2) +
+    ggplot2::labs(title=stringr::str_wrap(pyid, 20))
+
 
 # Explore your own DESeq2 analysis:
     Input_Hotgenes<-DEseq2_export(DEseq2_object = dds_con,

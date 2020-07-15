@@ -44,8 +44,8 @@ sel_pathway<-ht_batch[[contrastID]]$top
 
 # Selecting pathway by index number or string
 if(is.numeric(pathwayID)){
-pID<-sel_pathway[pathwayID]$pathway
-ids_leadingEdge<-unlist(sel_pathway[pathwayID]$leadingEdge)
+pID<-sel_pathway[pathwayID,]$pathway
+ids_leadingEdge<-unlist(sel_pathway[pathwayID,]$leadingEdge)
 }else if (is.character(pathwayID)){
 
 pID<-sel_pathway[sel_pathway$pathway == pathwayID,]$pathway

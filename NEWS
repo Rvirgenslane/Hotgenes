@@ -1,0 +1,5 @@
+
+# version 0.99.14
+-Built for R 3.6.1
+-Bug fixes
+-Added GSEA support example to README file.
