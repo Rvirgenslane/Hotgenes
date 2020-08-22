@@ -39,6 +39,16 @@ method="global",
 adjust.method="BH",
 p.value=0.1){
 
+# verify that design and expression data align
+if(!all(rownames(design_data) == colnames(Expression_dat))){
+stop("design_data does not match Expression_dat")
+}
+
+# verify that rownames(limmafit$design) and expression data align 
+  if(!all(rownames(limmafit$design) == colnames(Expression_dat))){
+    stop("limmafit$design does not match Expression_dat")
+  }  
+
 # setting up global variables
 res <- decideTests(limmafit, method=method, 
 adjust.method=adjust.method,
@@ -50,12 +60,12 @@ check.names = FALSE)
 
 # Getting adj pvalues
 Adj_res <- Limma_Adj_pval(limmafit, method=method, 
-                    adjust.method=adjust.method,
-                    p.value=p.value)
+adjust.method=adjust.method,
+p.value=p.value)
 
 df_Adj_res<-data.frame(Adj_res, 
-                       stringsAsFactors = FALSE,
-                       check.names = FALSE)
+stringsAsFactors = FALSE,
+check.names = FALSE)
 
 # betas
 betas_con <-data.frame(limmafit[["coefficients"]], check.names = FALSE)

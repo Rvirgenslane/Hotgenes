@@ -1,5 +1,19 @@
+# version 0.99.15
+-Add AutoTation for making annotation color list for pheatmap
+-Added contrast name to BatchGSEA plot
+-Added check for alignment of limma expression data, with DE model matrix, and design data
+-Updated the formatting in the README file
 
 # version 0.99.14
 -Built for R 3.6.1
 -Bug fixes
 -Added GSEA support example to README file.
+
+
+
+# In progress:
+-Need support for Monocle3
+-Need to update the normalization labels
+-Add submit button to PCA in shiny app
+-Need to update selected_contrast from FactoWrapper
+--NULL must be all contrasts.

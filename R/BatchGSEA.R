@@ -96,7 +96,7 @@ shape=21, stroke=0.6) +
 scale_fill_manual(values = c("Down-regulated" = "dodgerblue",
 "Up-regulated" = "firebrick") ) +
 coord_flip() +
-labs(x="Pathway", y="Normalized Enrichment Score") +
+labs(title= DE_sel,x="Pathway", y="Normalized Enrichment Score") +
 theme_minimal(base_size = 8) +
 theme(axis.text  = element_text(size=8))
 
