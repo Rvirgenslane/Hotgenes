@@ -1,4 +1,8 @@
-# Hotgenes
+# Hotgenes (deprecated repo)
+
+If you read about this package or saw a talk about, this is not the official repo. 
+
+
 This package reads the DESeq2 or Limma output files to provide 
 users with a way to visualize the results in their 
 browser. Currently only supports DE with "Wald" testing. 
