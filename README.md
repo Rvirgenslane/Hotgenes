@@ -1,6 +1,6 @@
 # Hotgenes (deprecated repo)
 
-If you read about this package or saw a talk about, this is not the official repo. 
+If you read about this package or saw a talk about it, this is not the official repo. 
 
 
 This package reads the DESeq2 or Limma output files to provide 
